@@ -1,0 +1,5 @@
+Logo Colors are :
+    d30001 Engineering Orange (red Color in logo) EB455F
+    ffffff White
+    2A5794 YlnMn Blue (Blue Color in logo) BAD7E9 2B3467
+    070606 Black

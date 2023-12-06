@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smarthomeapp/splashScreen_or_IntroScreen.dart';
 
 void main() {
   runApp(SmartHome());
@@ -13,7 +14,7 @@ class SmartHome extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue
       ),
-      home: LoginPage(),
+      home: SplashScreen(),
     );
   }
 }
@@ -191,10 +192,9 @@ class LoginPage extends StatelessWidget{
                 ),
               ),
 
-
             ],
         ),
-      )
+      ),
     );
   }
 }
