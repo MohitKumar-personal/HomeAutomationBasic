@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class MyTextField extends StatelessWidget {
@@ -6,11 +5,13 @@ class MyTextField extends StatelessWidget {
   final String hintText;
   final bool obscureText;
 
+
   const MyTextField({
     super.key,
     required this.controller,
     required this.hintText,
     required this.obscureText,
+
   });
 
   @override

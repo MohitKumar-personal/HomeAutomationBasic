@@ -2,8 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:version_1/components/mybutton.dart';
 import 'package:version_1/components/mytextfields.dart';
-import 'package:version_1/components/square_tile.dart';
-import 'package:version_1/screens/registerScreen.dart';
 
 class RegisterScreen extends StatefulWidget{
   final Function()? onTap;
@@ -34,17 +32,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
     // Try Creating the User
     try{
       // Check if password is confirmed or same
-      if(passwordController.text == confirmpasswordController.text){
+      if(passwordController.text == confirmpasswordController.text) {
         await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: emailidController.text,
           password: passwordController.text,
         );
-      }else{
+      }
+      else {
         //Show Error message that your password is not same or confirmed
-        showErrorMessage("Password doesn\'t match!");
+        showErrorMessage("Password doesn\'t match !!");
+        Navigator.pop(context);
       }
       //Pop the Loading Circle
-      Navigator.pop(context);
+
     } on FirebaseAuthException catch (error) {
       //Pop the Loading Circle
       Navigator.pop(context);
@@ -55,18 +55,32 @@ class _RegisterScreenState extends State<RegisterScreen> {
     }
 
   }
-// Error message to User
+
+  // Error message to User
   void showErrorMessage(String message){
-    showDialog(
-        context: context,
-        builder: (context){
-          return AlertDialog(
-            title: Text(message),
-          );
-        }
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Center(
+          child: Text(message,
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              )
+          ),
+        ),
+        backgroundColor: Color(0xffd30001),
+        dismissDirection: DismissDirection.up,
+        behavior: SnackBarBehavior.floating,
+        margin: EdgeInsets.only(
+            bottom: MediaQuery.of(context).size.height - 120,
+            left: 25,
+            right: 25
+        ),
+
+
+      ),
     );
   }
-
 
   @override
   Widget build(BuildContext context) {

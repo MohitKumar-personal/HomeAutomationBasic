@@ -2,8 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:version_1/components/mybutton.dart';
 import 'package:version_1/components/mytextfields.dart';
-import 'package:version_1/components/square_tile.dart';
-import 'package:version_1/screens/registerScreen.dart';
+import 'package:version_1/screens/forgot_passwordScreen.dart';
 
 class LoginScreen extends StatefulWidget{
   final Function()? onTap;
@@ -18,7 +17,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final emailidController = TextEditingController();
   final passwordController = TextEditingController();
 
-  //sing user in method
+  //USER SIGN IN METHOD
   void signUserIn() async{
     // Show Loading Circle
     showDialog(
@@ -48,15 +47,30 @@ class _LoginScreenState extends State<LoginScreen> {
     }
 
   }
-// Error message to User
+
+// SHOW ERROR MESSAGE TO USER
   void showErrorMessage(String message){
-    showDialog(
-        context: context,
-        builder: (context){
-          return AlertDialog(
-            title: Text(message),
-          );
-        }
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Center(
+          child: Text(message,
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              )
+          ),
+        ),
+        backgroundColor: Color(0xffd30001),
+        dismissDirection: DismissDirection.up,
+        behavior: SnackBarBehavior.floating,
+        margin: EdgeInsets.only(
+            bottom: MediaQuery.of(context).size.height - 120,
+            left: 25,
+            right: 25
+        ),
+
+
+      ),
     );
   }
 
@@ -104,15 +118,24 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 10,),
 
                 //FORGET PASSWORD FIELD OR TEXT
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 25.0),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 25.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Text('Forget Password?',
-                        style: TextStyle(color: Color(0xff2A5794),
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15
+                      GestureDetector(
+                        onTap: (){
+                          Navigator.push(context,
+                              MaterialPageRoute(
+                                builder: (context) => ForgotPasswordScreen(),
+                              ));
+                        },
+                        child: const Text('Forget Password?',
+                          style: TextStyle(
+                              color: Color(0xff2A5794),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15
+                          ),
                         ),
                       ),
                     ],
@@ -168,7 +191,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 //
                 // SizedBox(height: 50,),
 
-                // REGISTRATION BUTTON OR TEXT
+                //NOT A MEMBER ? REGISTER NOW...
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
