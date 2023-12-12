@@ -4,6 +4,8 @@ import 'package:version_1/components/mybutton.dart';
 import 'package:version_1/components/mytextfields.dart';
 import 'package:version_1/screens/forgot_passwordScreen.dart';
 
+import '../components/square_tile.dart';
+
 class LoginScreen extends StatefulWidget{
   final Function()? onTap;
   const LoginScreen({super.key, required this.onTap});
@@ -213,7 +215,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                   ],
-                )
+                ),
+                SizedBox(height: 50,)
 
               ],
             ),

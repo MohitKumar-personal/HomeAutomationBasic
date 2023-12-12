@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 class SquareTile extends StatelessWidget {
   final String imagePath;
-  const SquareTile({super.key, required this.imagePath});
+  final double boxheight;
+
+  const SquareTile({super.key, required this.imagePath, required this.boxheight});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +16,7 @@ class SquareTile extends StatelessWidget {
       ),
       child: Image.asset(
         imagePath,
-        height: 40,
+        height: boxheight,
       ),
     );
   }

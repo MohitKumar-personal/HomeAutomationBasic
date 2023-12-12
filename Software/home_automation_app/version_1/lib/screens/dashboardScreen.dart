@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:version_1/components/smart_device_box.dart';
 
+
 class DashBoardScreen extends StatefulWidget {
   DashBoardScreen({super.key});
 
@@ -55,10 +56,15 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                     height: 45,
                     color: Colors.grey[800],
                   ),
-                  Icon(
-                    Icons.person,
-                    size: 45,
-                    color: Colors.grey[800],
+                  GestureDetector(
+                    onTap: (){
+                      signOutUser();
+                    },
+                    child: Icon(
+                      Icons.person,
+                      size: 45,
+                      color: Colors.grey[800],
+                    ),
                   ),
                 ],
               ),
