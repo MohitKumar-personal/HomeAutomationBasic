@@ -1,0 +1,45 @@
+import sys, time
+import network
+from firebase_realtime import Auth, Realtime
+import machine
+
+#WIFI CONNECTION
+def wlan_connect(ssid, pwd):
+    wlan = network.WLAN(network.STA_IF)
+    if not wlan.active() or not wlan.isconnected():
+        wlan.active(True)
+        wlan.connect(ssid,pwd)
+        while not wlan.isconnected():
+            pass
+    print("Network connection successful!")
+    #print('network config:', wlan.ifconfig())
+    print("IP address:", wlan.ifconfig()[0])
+wlan_connect('Mohit', 'Mohit@1358')
+
+#FIREBASE CONNECTION
+real_db_url = f"https://version-01-439f2-default-rtdb.asia-southeast1.firebasedatabase.app/"
+auth = Auth()
+flg, headers = auth.validate_user("transdig555@gmail.com", "Mohit@2015192", "AIzaSyA5EllEpnbt7PtsyjcVV1OpzhvZn7V5f4I")
+# print(flg, headers)
+realtime = Realtime(real_db_url, headers)
+# print(realtime)
+
+#PIN-OUT and PIN-IN SELECTION
+relay01out=machine.Pin(2,machine.Pin.OUT)
+relay01in=machine.Pin(2,machine.Pin.IN)
+relay02out=machine.Pin(2,machine.Pin.OUT)
+relay02in=machine.Pin(2,machine.Pin.IN)
+
+#STATUS CHECK AND RELAYS ON AND OFF ACCORDING TO STATUS
+flg, value01 = realtime.get("LED01")
+    if(value01=='ON'):
+        relay01out.off()
+    if(value01=='OFF'):
+        relay01out.on()
+
+flg, value02 = realtime.get("LED02")
+    if(value01=='ON'):
+        relay02out.off()
+    if(value02=='OFF'):
+        relay02out.on()
+

@@ -1,0 +1,15 @@
+1. The very first instruction is to download the firmware file from below link :-
+	"https://micropython.org/download/ESP32_GENERIC/"
+
+2. Then the next step is to install the Thonny Software in yout PC.
+3. From Tools in Thonny software, go to Manage plugins, then search for esptool 
+   and install it.
+4. Now go on Run in Thonny software and go on Run and configure interpreter, Now you have to 
+   select Micropython (ESP32). After that you have to select right COM port for esp32,
+   after that click on 'install or update micropython' and select the COM port.
+   Now click on Browse and selct your downloaded file or firmware file. Make sure that 
+   'Erase flash before installing' option is enabled and then install it.
+5. Make sure you will press and hold the boot button on your esp32 while you cannot see 
+   the Writting option in installing.
+6. Now you can check that your python is installed or not, by just writing or interacting
+   in python on SHELL.
