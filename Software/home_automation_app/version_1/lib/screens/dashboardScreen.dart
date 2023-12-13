@@ -1,7 +1,12 @@
+import 'dart:ffi';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:version_1/components/smart_device_box.dart';
+
+import '../services/user_details.dart';
 
 
 class DashBoardScreen extends StatefulWidget {
@@ -17,6 +22,18 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
   // Sign out User Method
   void signOutUser(){
     FirebaseAuth.instance.signOut();
+  }
+
+  //GET USER DETAILS
+  String email = "";
+  String fullname = "";
+  getUserInfo(){
+    String uid = FirebaseAuth.instance.currentUser!.uid;
+    FirebaseFirestore.instance.collection('users').doc(uid).set({
+      'email':email,
+      'fullname': fullname
+    });
+    return fullname;
   }
 
   // list of smart devices
@@ -85,7 +102,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                     ),
                   ),
                   Text(
-                      'Mohit Kumar',
+                      fullname,
                     style: GoogleFonts.bebasNeue(
                       fontSize: 72
                     ),
@@ -95,6 +112,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
             ),
             const SizedBox(height: 25),
 
+            //DIVIDER
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 40.0),
               child: Divider(
@@ -118,7 +136,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
             ),
             const SizedBox(height: 10,),
 
-            //SMART DEVICES + GRIDS
+            //SMART DEVICES + GRIDS LAYOUT
             Expanded(
               child: GridView.builder(
                 itemCount: 4,
