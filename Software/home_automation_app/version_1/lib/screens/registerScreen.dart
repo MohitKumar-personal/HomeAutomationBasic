@@ -36,16 +36,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
       // Check if password is confirmed or same
       if(passwordController.text == confirmpasswordController.text) {
         //CREATE USER
-        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        UserCredential? userCredential = await FirebaseAuth.instance
+            .createUserWithEmailAndPassword(
           email: emailidController.text,
           password: passwordController.text,
         );
 
         //ADD USER DETAILS
-        addUserDetails(
-            fullnameController.text,
-            emailidController.text,
-        );
+        addUserDetails(userCredential);
 
         Navigator.pop(context);
 
@@ -64,13 +62,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
     }
   }
 
-  Future addUserDetails(String fullname, String email)  async {
-     await FirebaseFirestore.instance.collection('users').add({
-      'fullname': fullname,
-      'email': email,
-    })
-    .then((value) => print("User Added"))
-    .catchError((error) => showErrorMessage(error.code));
+  Future addUserDetails(UserCredential? userCredential)  async {
+    if (userCredential != null && userCredential.user != null){
+      await FirebaseFirestore.instance
+          .collection('UsersData')
+          .doc(userCredential.user!.email)
+          .set({
+        'email':userCredential.user!.email,
+        'fullname': fullnameController.text,
+      })
+          .then((value) => print("User Added"))
+          .catchError((error) => showErrorMessage(error.code));
+    }
   }
 
   // Error message to User

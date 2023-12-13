@@ -1,12 +1,10 @@
-import 'dart:ffi';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:version_1/components/smart_device_box.dart';
 
-import '../services/user_details.dart';
 
 
 class DashBoardScreen extends StatefulWidget {
@@ -17,7 +15,9 @@ class DashBoardScreen extends StatefulWidget {
 }
 
 class _DashBoardScreenState extends State<DashBoardScreen> {
-  final user= FirebaseAuth.instance.currentUser!;
+
+
+
 
   // Sign out User Method
   void signOutUser(){
@@ -25,16 +25,15 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
   }
 
   //GET USER DETAILS
-  String email = "";
-  String fullname = "";
-  getUserInfo(){
-    String uid = FirebaseAuth.instance.currentUser!.uid;
-    FirebaseFirestore.instance.collection('users').doc(uid).set({
-      'email':email,
-      'fullname': fullname
-    });
-    return fullname;
+  final User? currentUser = FirebaseAuth.instance.currentUser;
+
+  Future<DocumentSnapshot<Map<String,dynamic>>> getUserInfo() async{
+    return await FirebaseFirestore.instance
+        .collection('UsersData')
+        .doc(currentUser!.email)
+        .get();
   }
+
 
   // list of smart devices
   List mySmartDevices = [
@@ -50,6 +49,58 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
     setState(() {
       mySmartDevices[index][2] = value;
     });
+    FirebaseDatabase.instance.ref('Appliances')
+    .child('Switch0$index')
+    .set(value)
+    .then((value){
+            print('Switch0$index Button changed');
+    }).onError((error, stackTrace){
+            showErrorMessage(error.toString());
+    });
+  }
+
+  // //SIMPLE BUTTON TOGGLE
+  // bool value = false;
+  // onUpdate(){
+  //   setState(() {
+  //     value = !value;
+  //   });
+  // }
+  //
+  // //GET RELAY DATA AND UPDATE
+  // Future<void> relayData(value)async {
+  //   await FirebaseDatabase.instance
+  //       .ref('Appliances')
+  //       .child('Switch01')
+  //       .set(value);
+  //       // .then((value){
+  //       //   showErrorMessage("Button changed");
+  //       // }).onError((error, stackTrace){
+  //       //   showErrorMessage(error.toString());
+  //       // });
+  // }
+
+  void showErrorMessage(String message){
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Center(
+          child: Text(message,
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              )
+          ),
+        ),
+        backgroundColor: const Color(0xffd30001),
+        dismissDirection: DismissDirection.up,
+        behavior: SnackBarBehavior.floating,
+        margin: EdgeInsets.only(
+            bottom: MediaQuery.of(context).size.height - 120,
+            left: 25,
+            right: 25
+        ),
+      ),
+    );
   }
 
   @override
@@ -89,26 +140,40 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
             const SizedBox(height: 20,),
 
             //WELCOME HOME USER
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 40.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                      'Welcome Home',
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.grey.shade800,
-                    ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                    'Welcome Home',
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.grey.shade800,
                   ),
-                  Text(
-                      fullname,
-                    style: GoogleFonts.bebasNeue(
-                      fontSize: 72
-                    ),
-                  ),
-                ],
-              ),
+                ),
+                FutureBuilder(
+                    future: getUserInfo(),
+                    builder: (context, snapshot){
+                      if (snapshot.connectionState == ConnectionState.waiting)
+                        return Text("Loading...");
+                      else if (snapshot.hasError){
+                        return Text("Error: ${snapshot.error}");
+                      }
+                      else if (snapshot.hasData){
+                        Map<String,dynamic>?user = snapshot.data!.data();
+                        return Text(
+                          user!['fullname'],
+                          style: GoogleFonts.bebasNeue(
+                              fontSize: 72
+                          ),
+                        );
+                      }
+                      else {
+                        return Text("No Data");
+                      }
+
+                    },
+                ),
+              ],
             ),
             const SizedBox(height: 25),
 
@@ -136,10 +201,23 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
             ),
             const SizedBox(height: 10,),
 
-            //SMART DEVICES + GRIDS LAYOUT
+
+            // FloatingActionButton.extended(
+            //     onPressed: (){
+            //       onUpdate();
+            //       relayData(value);
+            //     },
+            //   label: value ? Text('ON'): Text('OFF'),
+            //   elevation: 20,
+            //   backgroundColor: value ? Colors.red : Colors.green,
+            //
+            // ),
+
+
+            // SMART DEVICES + GRIDS LAYOUT
             Expanded(
               child: GridView.builder(
-                itemCount: 4,
+                itemCount: 2,
                   padding: const EdgeInsets.symmetric(horizontal: 25),
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
@@ -155,6 +233,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                   }
               ),
             ),
+
 
           ],
         ),
