@@ -1,0 +1,56 @@
+{
+  "version": 1,
+  "author": "Anonymous maker",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "wokwi-breadboard-half", "id": "bb1", "top": -108.6, "left": -54.8, "attrs": {} },
+    {
+      "type": "board-esp32-devkit-c-v4",
+      "id": "esp",
+      "top": -96,
+      "left": 292.84,
+      "attrs": { "env": "micropython-20231005-v1.21.0" }
+    },
+    { "type": "wokwi-vcc", "id": "vcc1", "top": -133.64, "left": -115.2, "attrs": {} },
+    { "type": "wokwi-gnd", "id": "gnd1", "top": -86.4, "left": -115.8, "attrs": {} },
+    { "type": "wokwi-relay-module", "id": "relay1", "top": -211, "left": 28.8, "attrs": {} },
+    { "type": "wokwi-vcc", "id": "vcc2", "top": -277.64, "left": 240, "attrs": {} },
+    { "type": "wokwi-led", "id": "led1", "top": -234, "left": 272.6, "attrs": { "color": "red" } },
+    { "type": "wokwi-gnd", "id": "gnd2", "top": -259.2, "left": 335.4, "attrs": {} },
+    {
+      "type": "wokwi-resistor",
+      "id": "r1",
+      "top": -43.75,
+      "left": 56.2,
+      "rotate": 180,
+      "attrs": { "value": "400" }
+    },
+    { "type": "wokwi-slide-switch", "id": "sw1", "top": -5.2, "left": 166.3, "attrs": {} }
+  ],
+  "connections": [
+    [ "esp:TX", "$serialMonitor:RX", "", [] ],
+    [ "esp:RX", "$serialMonitor:TX", "", [] ],
+    [ "vcc1:VCC", "bb1:tp.1", "red", [ "v0" ] ],
+    [ "gnd1:GND", "bb1:tn.1", "black", [ "v0" ] ],
+    [ "relay1:VCC", "bb1:tp.2", "red", [ "h0" ] ],
+    [ "relay1:GND", "bb1:tn.3", "black", [ "h0" ] ],
+    [ "relay1:IN", "bb1:5t.a", "green", [ "h0" ] ],
+    [ "bb1:5t.e", "esp:32", "green", [ "v9.6", "h268.8", "v-19.2" ] ],
+    [ "gnd2:GND", "led1:C", "black", [ "v-9.6", "h-76.8", "v86.4" ] ],
+    [ "relay1:COM", "vcc2:VCC", "green", [ "h0" ] ],
+    [ "led1:A", "relay1:NO", "green", [ "v0" ] ],
+    [ "bb1:tp.8", "bb1:10t.a", "red", [ "v0" ] ],
+    [ "esp:34", "bb1:16t.a", "magenta", [ "h-9.45", "v-28.8" ] ],
+    [ "gnd1:GND", "bb1:bn.1", "black", [ "v0" ] ],
+    [ "bb1:tp.2", "bb1:bp.2", "red", [ "v0" ] ],
+    [ "sw1:2", "sw1:3", "green", [ "v0" ] ],
+    [ "sw1:3", "bb1:bn.20", "green", [ "v0" ] ],
+    [ "sw1:1", "bb1:16t.d", "green", [ "h-57.6", "v-57.6" ] ],
+    [ "r1:1", "bb1:16t.c", "", [ "$bb" ] ],
+    [ "r1:2", "bb1:10t.c", "", [ "$bb" ] ],
+    [ "sw1:1", "bb1:22b.h", "", [ "$bb" ] ],
+    [ "sw1:2", "bb1:23b.h", "", [ "$bb" ] ],
+    [ "sw1:3", "bb1:24b.h", "", [ "$bb" ] ]
+  ],
+  "dependencies": {}
+}

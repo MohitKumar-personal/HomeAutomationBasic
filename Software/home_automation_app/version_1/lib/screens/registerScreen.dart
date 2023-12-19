@@ -19,6 +19,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final passwordController = TextEditingController();
   final confirmpasswordController = TextEditingController();
 
+
   //sign up user method
   Future signUserUp() async{
     // Show Loading Circle

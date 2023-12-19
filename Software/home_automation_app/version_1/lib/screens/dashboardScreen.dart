@@ -8,15 +8,13 @@ import 'package:version_1/components/smart_device_box.dart';
 
 
 class DashBoardScreen extends StatefulWidget {
-  DashBoardScreen({super.key});
+  const DashBoardScreen({super.key});
 
   @override
   State<DashBoardScreen> createState() => _DashBoardScreenState();
 }
 
 class _DashBoardScreenState extends State<DashBoardScreen> {
-
-
 
 
   // Sign out User Method
@@ -26,12 +24,12 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
 
   //GET USER DETAILS
   final User? currentUser = FirebaseAuth.instance.currentUser;
-
   Future<DocumentSnapshot<Map<String,dynamic>>> getUserInfo() async{
     return await FirebaseFirestore.instance
         .collection('UsersData')
         .doc(currentUser!.email)
         .get();
+
   }
 
 
@@ -40,22 +38,26 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
     // [ smartDeviceName, iconPath , powerStatus ]
     ["Smart Light", "assets/images/icons/lightbulb.png", false],
     ["Smart Light", "assets/images/icons/lightbulb.png", false],
-    ["Smart TV", "assets/images/icons/lightbulb.png", false],
-    ["Smart Fan", "assets/images/icons/lightbulb.png", false],
   ];
+
+  // bool statusvalue=false;
+  // getStatusofswitches(int index){
+  //     statusvalue = FirebaseDatabase.instance
+  //         .ref('Appliances/Switch0$index')
+  //         .onValue
+  //         .listen((DatabaseEvent event){
+  //           event.snapshot.value;
+  //         }) as bool;
+  //     powerSwitchChanged(statusvalue, index);
+  // }
 
   // power button switched
   void powerSwitchChanged(bool value, int index) {
     setState(() {
       mySmartDevices[index][2] = value;
-    });
-    FirebaseDatabase.instance.ref('Appliances')
-    .child('Switch0$index')
-    .set(value)
-    .then((value){
-            print('Switch0$index Button changed');
-    }).onError((error, stackTrace){
-            showErrorMessage(error.toString());
+      FirebaseDatabase.instance.ref('Appliances/Switch0$index')
+          .child('Switch0$index')
+          .set(value);
     });
   }
 
@@ -67,18 +69,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
   //   });
   // }
   //
-  // //GET RELAY DATA AND UPDATE
-  // Future<void> relayData(value)async {
-  //   await FirebaseDatabase.instance
-  //       .ref('Appliances')
-  //       .child('Switch01')
-  //       .set(value);
-  //       // .then((value){
-  //       //   showErrorMessage("Button changed");
-  //       // }).onError((error, stackTrace){
-  //       //   showErrorMessage(error.toString());
-  //       // });
-  // }
+
 
   void showErrorMessage(String message){
     ScaffoldMessenger.of(context).showSnackBar(
@@ -104,6 +95,12 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Navigator.pop(context);
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xfff5fffa),
@@ -153,12 +150,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                 FutureBuilder(
                     future: getUserInfo(),
                     builder: (context, snapshot){
-                      if (snapshot.connectionState == ConnectionState.waiting)
-                        return Text("Loading...");
-                      else if (snapshot.hasError){
-                        return Text("Error: ${snapshot.error}");
-                      }
-                      else if (snapshot.hasData){
+                      if (snapshot.hasData){
                         Map<String,dynamic>?user = snapshot.data!.data();
                         return Text(
                           user!['fullname'],
@@ -167,10 +159,15 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                           ),
                         );
                       }
-                      else {
-                        return Text("No Data");
+                      else if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Text("Loading...");
                       }
-
+                      else if (snapshot.hasError){
+                        return Text("Error: ${snapshot.error}");
+                      }
+                      else {
+                        return const Text("No Data");
+                      }
                     },
                 ),
               ],
@@ -201,19 +198,6 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
             ),
             const SizedBox(height: 10,),
 
-
-            // FloatingActionButton.extended(
-            //     onPressed: (){
-            //       onUpdate();
-            //       relayData(value);
-            //     },
-            //   label: value ? Text('ON'): Text('OFF'),
-            //   elevation: 20,
-            //   backgroundColor: value ? Colors.red : Colors.green,
-            //
-            // ),
-
-
             // SMART DEVICES + GRIDS LAYOUT
             Expanded(
               child: GridView.builder(
@@ -233,7 +217,6 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                   }
               ),
             ),
-
 
           ],
         ),

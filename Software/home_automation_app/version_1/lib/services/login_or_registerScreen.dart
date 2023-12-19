@@ -25,10 +25,9 @@ class _LoginOrRegisterScreenState extends State<LoginOrRegisterScreen> {
   Widget build(BuildContext context) {
     if (showLoginScreen){
       return LoginScreen(onTap: toggleScreen);
-    } else {
-      return RegisterScreen(
-        onTap: toggleScreen,
-      );
+    }
+    else {
+      return RegisterScreen(onTap: toggleScreen,);
     }
   }
 }

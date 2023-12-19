@@ -9,12 +9,14 @@ class SmartDeviceBox extends StatelessWidget {
   final bool powerOn_Off;
   void Function(bool)? onChanged;
 
+
   SmartDeviceBox({
     super.key,
     required this.smartDeviceName,
     required this.iconPath,
     required this.powerOn_Off,
     required this.onChanged,
+
   });
 
   @override
@@ -33,8 +35,8 @@ class SmartDeviceBox extends StatelessWidget {
             children: [
               Image.asset(
                   iconPath,
-                height: 65,
-                color: powerOn_Off ? Colors.white : Colors.grey.shade700,
+                height: 50,
+                color: powerOn_Off ? Colors.yellow : Colors.grey.shade700,
               ),
               // smart device name + switch
               Row(
@@ -46,7 +48,7 @@ class SmartDeviceBox extends StatelessWidget {
                         smartDeviceName,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 20,
+                          fontSize: 16,
                           color: powerOn_Off ? Colors.white : Colors.black,
                         ),
                       ),
