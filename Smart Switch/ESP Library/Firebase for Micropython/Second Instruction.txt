@@ -1,0 +1,19 @@
+1. You have to connect the ESP32 with you Wifi network, using network library. Code is given in file
+2. Then you have to install micropython-firebase-realtime library from Thonny/Tools/Manage packages..
+3. Then import that firebase library in you main file
+4. Give your realtime database URL
+4. For Authentication, make a user in authentication database. Then give Email-id, Password, and API key
+	or Web API key.
+5. Now all set you need to get commands like Put, Get, and more from NewFirebaseExample.py file.
+
+
+LINKS :-
+
+https://gitlab.com/mayankjohri/micropython-firebase-realtime
+
+https://www.youtube.com/watch?v=T35U8zwTe40
+
+https://github.com/ckoever/micropython-firebase-realtime-database/tree/main
+
+https://github.com/b-madhukar/IoT-Based-LED-control-using-Google-Firebase-and-ESP32-using-Micropython/tree/main
+

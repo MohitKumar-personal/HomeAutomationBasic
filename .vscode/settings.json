@@ -1,3 +1,6 @@
 {
-    "cmake.sourceDirectory": "G:/SEM 07/PROJECT/HomeAutomationBasic/Software/home_automation_app/version_1/linux"
+    "cmake.sourceDirectory": "G:/SEM 07/PROJECT/HomeAutomationBasic/Software/home_automation_app/version_1/linux",
+    "editor.fontSize": 12,
+    "screencastMode.fontSize": 24,
+    "terminal.integrated.fontSize": 12
 }
