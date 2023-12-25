@@ -31,8 +31,7 @@ firebase.setURL("https://version-01-439f2-default-rtdb.asia-southeast1.firebased
 
 #Setting up pins for the firebase database and checking wifi status
 wlan_status = wlan_connect()
-firebase.put("Appliances/SmartSwitch/SmartSwitch00", False, bg=0) # For Switch no.1
-firebase.put("Appliances/SmartSwitch/SmartSwitch00Flag", 0, bg=0)
+firebase.put("Appliances/SmartSwitch/SmartSwitch00", False, bg=0) # ForSmart Switch
 
 #--Main Function
 while True:
