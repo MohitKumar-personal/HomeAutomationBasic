@@ -1,1 +1,1 @@
-# HomeAutomationBasic
+# My Smart Home Solutions
